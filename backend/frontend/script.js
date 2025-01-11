@@ -109,7 +109,7 @@ function addReview(movieid, title) {
     }
 }
 
-function displayreview(data, id) {
+function displayreview(data, movieid) {
     const reviewSection = document.getElementById("reviewsSection");
 
     if (Array.isArray(data.reviews)) {
@@ -153,7 +153,7 @@ function displayreview(data, id) {
             editButton.onmouseout = function() {
                 editButton.style.backgroundColor = "#4CAF50";  
             };
-            editButton.onclick = () => editReview(review, id);
+            editButton.onclick = () => editReview(review, movieid);
 
             const deleteButton = document.createElement('button');
             deleteButton.innerText = "Delete";
@@ -172,7 +172,7 @@ function displayreview(data, id) {
                 deleteButton.style.backgroundColor = "#f44336"; 
             };
 
-            deleteButton.onclick = () => deleteReview(review, id);
+            deleteButton.onclick = () => deleteReview(review, movieid);
 
             reviewCard.appendChild(movieName);
             reviewCard.appendChild(reviewText);
