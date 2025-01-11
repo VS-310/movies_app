@@ -16,6 +16,7 @@
     "express": "^4.21.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.9.3",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "path": "^0.12.7"
   }
 }
