@@ -64,7 +64,7 @@ function display(movie){
 }
 
 function fetchReview(id,title){
-    fetch(``)
+    fetch(`https://movies-app-vugq.onrender.com\${id}`)
         .then(response => response.json())
         .then(data => {
             if(data.message){
@@ -89,7 +89,7 @@ function addReview(id, title) {
             review: text
         };
 
-        fetch(`your-api-endpoint-here`, {
+        fetch(`https://movies-app-vugq.onrender.com\${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ function editReview(review,id){
     const text = prompt('Edit your rating and should be in 1-5',review.review);
 
     if(text && !isNaN(text) && text >= 1 && text <= 5 && text!=review.review){
-        fetch(``, {
+        fetch(`https://movies-app-vugq.onrender.com\${id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ function deleteReview(review, id) {
     const del = confirm('Are you sure you want to delete this rating?');
     
     if (del) {
-        fetch(``, {
+        fetch(`https://movies-app-vugq.onrender.com\${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
