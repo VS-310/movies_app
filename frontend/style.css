@@ -1,0 +1,111 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #232529;
+    font-family: sans-serif;
+}
+
+h3{
+    color:white;
+    font-size: 1rem;
+    font-family: 'Lexend', sans-serif;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.logo{
+    background-color: rgb(196, 71, 25);
+    display: inline-block;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.topnav{
+    background-color: #43495c;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.topnav a{
+    float: left;
+    color: white;
+    font-family: cursive;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    padding: 17px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+.search-cont{
+    float: right;
+    background-color: #1d1f23;
+    height: auto;
+    border-radius: 5px;
+    align-items: center;
+    text-decoration: n
+}
+
+input{
+    all: unset;
+    font: 15px system-ui;
+    color: white;
+    height: 100%;
+    width: 100%;
+    padding: 6px 9px;
+}
+
+.thumbnail{
+    height: 300px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.column{
+    float: left;
+    width: 20%;
+    padding: 10px;
+}
+
+.card{
+    border-radius: 20px;
+    box-sizing: border-box;
+    width: fit-content;
+    padding: 15px;
+    height: 400px;
+    background-color: #43495c;
+}
+
+.editButton {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.editButton:hover {
+  background-color: #45a049;
+}
+
+.deleteButton {
+  padding: 8px 16px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.deleteButton:hover {
+  background-color: #e53935;
+}
