@@ -60,17 +60,17 @@ function display(movie) {
     document.querySelector(".title").innerText = movie.title;
     document.querySelector(".thumbnail").src = IMG_PATH + movie.poster_path;
 
-    fetchReview(movie.id, movie.title);
+    fetchReview(movie.movieid, movie.title);
 }
 
-function fetchReview(id, title) {
-    fetch(`https://movies-app-vugq.onrender.com/api/${id}`)
+function fetchReview(movieid, title) {
+    fetch(`https://movies-app-vugq.onrender.com/api/${movieid}`)
         .then(response => response.json())
         .then(data => {
             if (data.message) {
-                addReview(id, title);
+                addReview(movieid, title);
             } else {
-                displayreview(data, id);
+                displayreview(data,movieid);
             }
         })
         .catch(error => {
@@ -78,17 +78,17 @@ function fetchReview(id, title) {
         });
 }
 
-function addReview(id, title) {
+function addReview(movieid, title) {
     const text = prompt('Enter the rating from 1-5:');
     
     if (text && !isNaN(text) && text >= 1 && text <= 5) {
         const data = {
             title: title,
-            id: id,
+            movieid: movieid,
             review: text
         };
 
-        fetch(`https://movies-app-vugq.onrender.com/api/${id}`, {
+        fetch(`https://movies-app-vugq.onrender.com/api/${movieid}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ function addReview(id, title) {
         .then(data => {
             console.log('Rating added:', data);
             alert('Rating added successfully');
-            fetchReview(id, title);
+            fetchReview(movieid, title);
         })
         .catch(err => {
             console.error('Error adding rating:', err);
@@ -109,84 +109,89 @@ function addReview(id, title) {
     }
 }
 
-function displayreview(reviews, id) {
+function displayreview(data, id) {
     const reviewSection = document.getElementById("reviewsSection");
 
-    reviews.forEach(review => {
-        const reviewCard = document.createElement('div');
-        reviewCard.classList.add('reviewCard');
+    if (Array.isArray(data.reviews)) {
+        data.reviews.forEach(review => {
+            const reviewCard = document.createElement('div');
+            reviewCard.classList.add('reviewCard');
 
-        const movieName = document.createElement('h4');
-        movieName.innerText = `Movie: ${review.title}`;
-        movieName.style.fontSize = "20px";  
-        movieName.style.fontWeight = "bold";  
-        movieName.style.color = "#333";  
-        movieName.style.marginBottom = "10px";  
-        movieName.style.textAlign = "center";  
+            const movieName = document.createElement('h4');
+            movieName.innerText = `Movie: ${review.title}`;
+            movieName.style.fontSize = "20px";  
+            movieName.style.fontWeight = "bold";  
+            movieName.style.color = "#333";  
+            movieName.style.marginBottom = "10px";  
+            movieName.style.textAlign = "center";  
 
-        const reviewText = document.createElement('p');
-        reviewText.innerText = `Review: ${review.review}`;
-        reviewText.style.fontSize = "16px";  
-        reviewText.style.color = "#555";  
-        reviewText.style.lineHeight = "1.6";  
-        reviewText.style.marginBottom = "15px"; 
-        reviewText.style.padding = "10px";  
-        reviewText.style.backgroundColor = "#f9f9f9";  
-        reviewText.style.borderRadius = "5px";  
-        reviewText.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
+            const reviewText = document.createElement('p');
+            reviewText.innerText = `Review: ${review.review}`;
+            reviewText.style.fontSize = "16px";  
+            reviewText.style.color = "#555";  
+            reviewText.style.lineHeight = "1.6";  
+            reviewText.style.marginBottom = "15px"; 
+            reviewText.style.padding = "10px";  
+            reviewText.style.backgroundColor = "#f9f9f9";  
+            reviewText.style.borderRadius = "5px";  
+            reviewText.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
 
-        const editButton = document.createElement('button');
-        editButton.innerText = "Edit";
-        editButton.style.padding = "12px 24px";  
-        editButton.style.backgroundColor = "#4CAF50"; 
-        editButton.style.color = "white";
-        editButton.style.border = "none";
-        editButton.style.borderRadius = "8px";  
-        editButton.style.cursor = "pointer";
-        editButton.style.fontSize = "16px";  
-        editButton.style.marginTop = "10px";  
-        editButton.style.marginRight = "10px";  
-        editButton.onmouseover = function() {
-            editButton.style.backgroundColor = "#45a049";  
-        };
-        editButton.onmouseout = function() {
-            editButton.style.backgroundColor = "#4CAF50";  
-        };
-        editButton.onclick = () => editReview(review, id);
+            const editButton = document.createElement('button');
+            editButton.innerText = "Edit";
+            editButton.style.padding = "12px 24px";  
+            editButton.style.backgroundColor = "#4CAF50"; 
+            editButton.style.color = "white";
+            editButton.style.border = "none";
+            editButton.style.borderRadius = "8px";  
+            editButton.style.cursor = "pointer";
+            editButton.style.fontSize = "16px";  
+            editButton.style.marginTop = "10px";  
+            editButton.style.marginRight = "10px";  
+            editButton.onmouseover = function() {
+                editButton.style.backgroundColor = "#45a049";  
+            };
+            editButton.onmouseout = function() {
+                editButton.style.backgroundColor = "#4CAF50";  
+            };
+            editButton.onclick = () => editReview(review, id);
 
-        const deleteButton = document.createElement('button');
-        deleteButton.innerText = "Delete";
-        deleteButton.style.padding = "8px 16px";
-        deleteButton.style.backgroundColor = "#f44336";  
-        deleteButton.style.color = "white";
-        deleteButton.style.border = "none";
-        deleteButton.style.borderRadius = "5px";
-        deleteButton.style.cursor = "pointer";
-        deleteButton.style.fontSize = "14px";
-        deleteButton.style.marginTop = "5px";
-        deleteButton.onmouseover = function() {
-            deleteButton.style.backgroundColor = "#e53935";  
-        };
-        deleteButton.onmouseout = function() {
-            deleteButton.style.backgroundColor = "#f44336"; 
-        };
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = "Delete";
+            deleteButton.style.padding = "8px 16px";
+            deleteButton.style.backgroundColor = "#f44336";  
+            deleteButton.style.color = "white";
+            deleteButton.style.border = "none";
+            deleteButton.style.borderRadius = "5px";
+            deleteButton.style.cursor = "pointer";
+            deleteButton.style.fontSize = "14px";
+            deleteButton.style.marginTop = "5px";
+            deleteButton.onmouseover = function() {
+                deleteButton.style.backgroundColor = "#e53935";  
+            };
+            deleteButton.onmouseout = function() {
+                deleteButton.style.backgroundColor = "#f44336"; 
+            };
 
-        deleteButton.onclick = () => deleteReview(review, id);
+            deleteButton.onclick = () => deleteReview(review, id);
 
-        reviewCard.appendChild(movieName);
-        reviewCard.appendChild(reviewText);
-        reviewCard.appendChild(editButton);
-        reviewCard.appendChild(deleteButton);
+            reviewCard.appendChild(movieName);
+            reviewCard.appendChild(reviewText);
+            reviewCard.appendChild(editButton);
+            reviewCard.appendChild(deleteButton);
 
-        reviewSection.appendChild(reviewCard);
-    });
+            reviewSection.appendChild(reviewCard);
+        });
+    } else {
+        console.error("Expected 'reviews' to be an array but got:", data.reviews);
+    }
 }
 
-function editReview(review, id) {
+
+function editReview(review,movieid) {
     const text = prompt('Edit your rating and should be in 1-5', review.review);
 
     if (text && !isNaN(text) && text >= 1 && text <= 5 && text != review.review) {
-        fetch(`https://movies-app-vugq.onrender.com/api/${id}`, {
+        fetch(`https://movies-app-vugq.onrender.com/api/${movieid}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -197,7 +202,7 @@ function editReview(review, id) {
         .then(data => {
             console.log('Rating updated:', data);
             alert('Rating updated successfully!');
-            fetchReview(id);
+            fetchReview(movieid);
         })
         .catch(error => {
             console.error('Error updating rating:', error);
@@ -205,11 +210,11 @@ function editReview(review, id) {
     }
 }
 
-function deleteReview(review, id) {
+function deleteReview(review,movieid) {
     const del = confirm('Are you sure you want to delete this rating?');
     
     if (del) {
-        fetch(`https://movies-app-vugq.onrender.com/api/${id}`, {
+        fetch(`https://movies-app-vugq.onrender.com/api/${movieid}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -219,7 +224,7 @@ function deleteReview(review, id) {
         .then(data => {
             console.log('Rating deleted:', data);
             alert('Rating deleted successfully!');
-            fetchReview(id);
+            fetchReview(movieid);
         })
         .catch(error => {
             console.error('Error deleting rating:', error);
