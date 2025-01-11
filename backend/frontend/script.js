@@ -111,8 +111,48 @@ function displayreview(data, movieid) {
             reviewText.style.borderRadius = "5px";  
             reviewText.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
 
+            const editButton = document.createElement('button');
+            editButton.innerText = "Edit";
+            editButton.style.padding = "12px 24px";  
+            editButton.style.backgroundColor = "#4CAF50"; 
+            editButton.style.color = "white";
+            editButton.style.border = "none";
+            editButton.style.borderRadius = "8px";  
+            editButton.style.cursor = "pointer";
+            editButton.style.fontSize = "16px";  
+            editButton.style.marginTop = "10px";  
+            editButton.style.marginRight = "10px";  
+            editButton.onmouseover = function() {
+            editButton.style.backgroundColor = "#45a049";  
+            };
+            editButton.onmouseout = function() {
+            editButton.style.backgroundColor = "#4CAF50";  
+            };
+            editButton.onclick = () => editReview(review, movieid);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = "Delete";
+            deleteButton.style.padding = "8px 16px";
+            deleteButton.style.backgroundColor = "#f44336";  
+            deleteButton.style.color = "white";
+            deleteButton.style.border = "none";
+            deleteButton.style.borderRadius = "5px";
+            deleteButton.style.cursor = "pointer";
+            deleteButton.style.fontSize = "14px";
+            deleteButton.style.marginTop = "5px";
+            deleteButton.onmouseover = function() {
+            deleteButton.style.backgroundColor = "#e53935";  
+            };
+            deleteButton.onmouseout = function() {
+            deleteButton.style.backgroundColor = "#f44336"; 
+            };
+
+            deleteButton.onclick = () => deleteReview(review, movieid);
+
             reviewCard.appendChild(movieName);
             reviewCard.appendChild(reviewText);
+            reviewCard.appendChild(editButton);
+            reviewCard.appendChild(deleteButton);
 
             reviewSection.appendChild(reviewCard);
         });
