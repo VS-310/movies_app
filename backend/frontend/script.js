@@ -46,21 +46,21 @@ function returnMovies(url) {
                 main.appendChild(div_row);
 
                 div_card.addEventListener('click', function(){
-                    display(element);
+                    display(element.id, element.title, element.poster_path);
                 });
             });
         });
 }
 
-function display(movie) {
+function display(movieid, title, poster_path) {
     const div_card = document.querySelector('.card');
     div_card.style.display = 'block';
     main.style.display = 'none';
 
-    document.querySelector(".title").innerText = movie.title;
-    document.querySelector(".thumbnail").src = IMG_PATH + movie.poster_path;
+    document.querySelector(".title").innerText = title;
+    document.querySelector(".thumbnail").src = IMG_PATH + poster_path;
 
-    fetchReview(movie.movieid, movie.title);
+    fetchReview(movieid, title);
 }
 
 function fetchReview(movieid, title) {
@@ -69,14 +69,54 @@ function fetchReview(movieid, title) {
         .then(data => {
             if (data.message) {
                 addReview(movieid, title);
+            } else if (data.reviews && Array.isArray(data.reviews)) {
+                displayreview(data, movieid);
             } else {
-                displayreview(data,movieid);
+                console.log('No reviews found');
             }
         })
         .catch(error => {
             console.error('Error fetching ratings:', error);
         });
 }
+
+function displayreview(data, movieid) {
+    const reviewSection = document.getElementById("reviewsSection");
+
+    if (Array.isArray(data.reviews)) {
+        data.reviews.forEach(review => {
+            const reviewCard = document.createElement('div');
+            reviewCard.classList.add('reviewCard');
+
+            const movieName = document.createElement('h4');
+            movieName.innerText = `Movie: ${review.title}`;
+            movieName.style.fontSize = "20px";  
+            movieName.style.fontWeight = "bold";  
+            movieName.style.color = "#333";  
+            movieName.style.marginBottom = "10px";  
+            movieName.style.textAlign = "center";  
+
+            const reviewText = document.createElement('p');
+            reviewText.innerText = `Review: ${review.review}`;
+            reviewText.style.fontSize = "16px";  
+            reviewText.style.color = "#555";  
+            reviewText.style.lineHeight = "1.6";  
+            reviewText.style.marginBottom = "15px"; 
+            reviewText.style.padding = "10px";  
+            reviewText.style.backgroundColor = "#f9f9f9";  
+            reviewText.style.borderRadius = "5px";  
+            reviewText.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
+
+            reviewCard.appendChild(movieName);
+            reviewCard.appendChild(reviewText);
+
+            reviewSection.appendChild(reviewCard);
+        });
+    } else {
+        console.error("Expected 'reviews' to be an array but got:", data.reviews);
+    }
+}
+
 
 function addReview(movieid, title) {
     const text = prompt('Enter the rating from 1-5:');
@@ -108,84 +148,6 @@ function addReview(movieid, title) {
         alert('Please enter a valid rating between 1 and 5.');
     }
 }
-
-function displayreview(data, movieid) {
-    const reviewSection = document.getElementById("reviewsSection");
-
-    if (Array.isArray(data.reviews)) {
-        data.reviews.forEach(review => {
-            const reviewCard = document.createElement('div');
-            reviewCard.classList.add('reviewCard');
-
-            const movieName = document.createElement('h4');
-            movieName.innerText = `Movie: ${review.title}`;
-            movieName.style.fontSize = "20px";  
-            movieName.style.fontWeight = "bold";  
-            movieName.style.color = "#333";  
-            movieName.style.marginBottom = "10px";  
-            movieName.style.textAlign = "center";  
-
-            const reviewText = document.createElement('p');
-            reviewText.innerText = `Review: ${review.review}`;
-            reviewText.style.fontSize = "16px";  
-            reviewText.style.color = "#555";  
-            reviewText.style.lineHeight = "1.6";  
-            reviewText.style.marginBottom = "15px"; 
-            reviewText.style.padding = "10px";  
-            reviewText.style.backgroundColor = "#f9f9f9";  
-            reviewText.style.borderRadius = "5px";  
-            reviewText.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
-
-            const editButton = document.createElement('button');
-            editButton.innerText = "Edit";
-            editButton.style.padding = "12px 24px";  
-            editButton.style.backgroundColor = "#4CAF50"; 
-            editButton.style.color = "white";
-            editButton.style.border = "none";
-            editButton.style.borderRadius = "8px";  
-            editButton.style.cursor = "pointer";
-            editButton.style.fontSize = "16px";  
-            editButton.style.marginTop = "10px";  
-            editButton.style.marginRight = "10px";  
-            editButton.onmouseover = function() {
-                editButton.style.backgroundColor = "#45a049";  
-            };
-            editButton.onmouseout = function() {
-                editButton.style.backgroundColor = "#4CAF50";  
-            };
-            editButton.onclick = () => editReview(review, movieid);
-
-            const deleteButton = document.createElement('button');
-            deleteButton.innerText = "Delete";
-            deleteButton.style.padding = "8px 16px";
-            deleteButton.style.backgroundColor = "#f44336";  
-            deleteButton.style.color = "white";
-            deleteButton.style.border = "none";
-            deleteButton.style.borderRadius = "5px";
-            deleteButton.style.cursor = "pointer";
-            deleteButton.style.fontSize = "14px";
-            deleteButton.style.marginTop = "5px";
-            deleteButton.onmouseover = function() {
-                deleteButton.style.backgroundColor = "#e53935";  
-            };
-            deleteButton.onmouseout = function() {
-                deleteButton.style.backgroundColor = "#f44336"; 
-            };
-
-            deleteButton.onclick = () => deleteReview(review, movieid);
-
-            reviewCard.appendChild(movieName);
-            reviewCard.appendChild(reviewText);
-            reviewCard.appendChild(editButton);
-            reviewCard.appendChild(deleteButton);
-
-            reviewSection.appendChild(reviewCard);
-        });
-    } else {
-        console.error("Expected 'reviews' to be an array but got:", data.reviews);
-    }
-}
-
 
 function editReview(review,movieid) {
     const text = prompt('Edit your rating and should be in 1-5', review.review);
