@@ -1,3 +1,4 @@
 # ignored files to git
-backend/.env/
+
 backend/node_modules/
+backend/.env/
