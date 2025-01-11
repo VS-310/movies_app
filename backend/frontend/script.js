@@ -29,7 +29,7 @@ function returnMovies(url) {
                 image.setAttribute('class', 'thumbnail');
 
                 const title = document.createElement('h3');
-                title.setAttribute('class', 'title'); // Changed to class
+                title.setAttribute('class', 'title');
 
                 const center = document.createElement('center');
 
@@ -64,7 +64,7 @@ function display(movie) {
 }
 
 function fetchReview(id, title) {
-    fetch(`https://movies-app-vugq.onrender.com/${id}`)
+    fetch(`https://movies-app-vugq.onrender.com/api/${id}`)
         .then(response => response.json())
         .then(data => {
             if (data.message) {
@@ -88,7 +88,7 @@ function addReview(id, title) {
             review: text
         };
 
-        fetch(`https://movies-app-vugq.onrender.com/${id}`, {
+        fetch(`https://movies-app-vugq.onrender.com/api/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ function editReview(review, id) {
     const text = prompt('Edit your rating and should be in 1-5', review.review);
 
     if (text && !isNaN(text) && text >= 1 && text <= 5 && text != review.review) {
-        fetch(`https://movies-app-vugq.onrender.com/${id}`, {
+        fetch(`https://movies-app-vugq.onrender.com/api/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -209,7 +209,7 @@ function deleteReview(review, id) {
     const del = confirm('Are you sure you want to delete this rating?');
     
     if (del) {
-        fetch(`https://movies-app-vugq.onrender.com/${id}`, {
+        fetch(`https://movies-app-vugq.onrender.com/api/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
