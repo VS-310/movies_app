@@ -27,15 +27,14 @@ function returnMovies(url) {
 
                 const image = document.createElement('img');
                 image.setAttribute('class', 'thumbnail');
-                image.setAttribute('id', 'image');
 
                 const title = document.createElement('h3');
-                title.setAttribute('id', 'title');
+                title.setAttribute('class', 'title'); // Changed to class
 
                 const center = document.createElement('center');
 
                 title.innerHTML = 
-                `${element.title} <br> <a href="" style="color: rgb(196, 71, 25); text-decoration: underline; text-decoration-style: dotted;"> Reviews </a>`;
+                `${element.title} <br> <a href="#" style="color: rgb(196, 71, 25); text-decoration: underline; text-decoration-style: dotted;"> Reviews </a>`;
 
                 image.src = IMG_PATH + element.poster_path;
                 center.appendChild(image);
@@ -53,26 +52,25 @@ function returnMovies(url) {
         });
 }
 
-function display(movie){
-    const div_card = document.getElementsByClassName('card');
-    div_card.style.display='block';
-    main.style.display='none';
+function display(movie) {
+    const div_card = document.querySelector('.card');
+    div_card.style.display = 'block';
+    main.style.display = 'none';
 
-    document.getElementById("title").innerText = movie.title;
-    document.getElementsByClassName("thumbnail").src = IMG_PATH + movie.poster_path;
+    document.querySelector(".title").innerText = movie.title;
+    document.querySelector(".thumbnail").src = IMG_PATH + movie.poster_path;
 
     fetchReview(movie.id, movie.title);
 }
 
-function fetchReview(id,title){
-    fetch(`https://movies-app-vugq.onrender.com\${id}`)
+function fetchReview(id, title) {
+    fetch(`https://movies-app-vugq.onrender.com/${id}`)
         .then(response => response.json())
         .then(data => {
-            if(data.message){
-                addReview(id,title);
-            }
-            else{
-                displayreview(data,id);
+            if (data.message) {
+                addReview(id, title);
+            } else {
+                displayreview(data, id);
             }
         })
         .catch(error => {
@@ -90,29 +88,29 @@ function addReview(id, title) {
             review: text
         };
 
-        fetch(`https://movies-app-vugq.onrender.com\${id}`, {
+        fetch(`https://movies-app-vugq.onrender.com/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Rating added:', data);
-                alert('Rating added successfully');
-                fetchReview(id, title);
-            })
-            .catch(err => {
-                console.error('Error adding rating:', err);
-            });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Rating added:', data);
+            alert('Rating added successfully');
+            fetchReview(id, title);
+        })
+        .catch(err => {
+            console.error('Error adding rating:', err);
+        });
     } else {
         alert('Please enter a valid rating between 1 and 5.');
     }
 }
 
-function displayreview(reviews,id){
-    const reviewCard = document.getElementById("reviewsSection");
+function displayreview(reviews, id) {
+    const reviewSection = document.getElementById("reviewsSection");
 
     reviews.forEach(review => {
         const reviewCard = document.createElement('div');
@@ -149,10 +147,10 @@ function displayreview(reviews,id){
         editButton.style.marginTop = "10px";  
         editButton.style.marginRight = "10px";  
         editButton.onmouseover = function() {
-        editButton.style.backgroundColor = "#45a049";  
+            editButton.style.backgroundColor = "#45a049";  
         };
         editButton.onmouseout = function() {
-        editButton.style.backgroundColor = "#4CAF50";  
+            editButton.style.backgroundColor = "#4CAF50";  
         };
         editButton.onclick = () => editReview(review, id);
 
@@ -167,10 +165,10 @@ function displayreview(reviews,id){
         deleteButton.style.fontSize = "14px";
         deleteButton.style.marginTop = "5px";
         deleteButton.onmouseover = function() {
-        deleteButton.style.backgroundColor = "#e53935";  
+            deleteButton.style.backgroundColor = "#e53935";  
         };
         deleteButton.onmouseout = function() {
-        deleteButton.style.backgroundColor = "#f44336"; 
+            deleteButton.style.backgroundColor = "#f44336"; 
         };
 
         deleteButton.onclick = () => deleteReview(review, id);
@@ -184,26 +182,26 @@ function displayreview(reviews,id){
     });
 }
 
-function editReview(review,id){
-    const text = prompt('Edit your rating and should be in 1-5',review.review);
+function editReview(review, id) {
+    const text = prompt('Edit your rating and should be in 1-5', review.review);
 
-    if(text && !isNaN(text) && text >= 1 && text <= 5 && text!=review.review){
-        fetch(`https://movies-app-vugq.onrender.com\${id}`, {
+    if (text && !isNaN(text) && text >= 1 && text <= 5 && text != review.review) {
+        fetch(`https://movies-app-vugq.onrender.com/${id}`, {
             method: 'PUT',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ review: text }),
-          })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Rating updated:', data);
-                alert('Rating updated successfully!');
-                fetchReview(id); 
-            })
-            .catch(error => {
-                console.error('Error updating rating:', error);
-            });
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Rating updated:', data);
+            alert('Rating updated successfully!');
+            fetchReview(id);
+        })
+        .catch(error => {
+            console.error('Error updating rating:', error);
+        });
     }
 }
 
@@ -211,7 +209,7 @@ function deleteReview(review, id) {
     const del = confirm('Are you sure you want to delete this rating?');
     
     if (del) {
-        fetch(`https://movies-app-vugq.onrender.com\${id}`, {
+        fetch(`https://movies-app-vugq.onrender.com/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -235,8 +233,7 @@ form.addEventListener('submit', (e) => {
     main.innerHTML = '';
     const searchItem = search.value;
 
-    if(searchItem) {
+    if (searchItem) {
         returnMovies(SEARCH_API + searchItem);
-        // search.value = '';
     }
 });
