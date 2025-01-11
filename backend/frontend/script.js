@@ -54,6 +54,7 @@ function returnMovies(url) {
 }
 
 function display(movie){
+    const div_card = document.getElementsByClassName('card');
     div_card.style.display='block';
     main.style.display='none';
 
@@ -228,7 +229,6 @@ function deleteReview(review, id) {
         });
     }
 }
-
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
