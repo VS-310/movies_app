@@ -79,6 +79,16 @@ input{
     background-color: #43495c;
 }
 
+#movieDetails{
+    border-radius: 20px;
+    box-sizing: border-box;
+    width: fit-content;
+    margin-top: 10px;
+    padding: 15px;
+    height: 400px;
+    background-color: #43495c;
+}
+
 .editButton {
   padding: 8px 16px;
   background-color: #4CAF50;

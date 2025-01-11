@@ -13,16 +13,16 @@ router.get('/', async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(404).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
 router.post('/:movieid', async (req, res) => {
     try {
         const movieid = req.params.movieid;
-        const { rating, title } = req.body;
-        if (!rating || !title) {
-            return res.status(400).json({ error: 'title and rating are required' });
+        const rating = req.body;
+        if (!rating) {
+            return res.status(400).json({ error: 'Rating is required' });
         }
 
         const review = new Review({
@@ -34,7 +34,8 @@ router.post('/:movieid', async (req, res) => {
         const response = await review.save();
 
         res.status(200).json({ message: "Review saved successfully", response: response });
-    } catch (err) {
+    } 
+    catch (err) {
         console.log(err);
         if (err.name === "ValidationError") {
             return res.status(400).json({
@@ -42,7 +43,7 @@ router.post('/:movieid', async (req, res) => {
                 message: err.message,
             });
         }
-        res.status(400).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
@@ -57,7 +58,7 @@ router.get('/:movieid', async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(404).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
@@ -81,7 +82,7 @@ router.put('/:movieid', async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(404).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
@@ -97,7 +98,7 @@ router.delete('/:movieid', async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(404).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 

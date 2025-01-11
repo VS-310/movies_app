@@ -53,12 +53,12 @@ function returnMovies(url) {
 }
 
 function display(movieid, title, poster_path) {
-    const div_card = document.querySelector('.card');
-    div_card.style.display = 'block';
     main.style.display = 'none';
+    const movieDetails = document.getElementById('movieDetails');
+    movieDetails.style.display = 'block';
 
-    document.querySelector(".title").innerText = title;
-    document.querySelector(".thumbnail").src = IMG_PATH + poster_path;
+    document.getElementById("movieTitle").innerHTML = `${title}`;
+    document.getElementById("moviePoster").src = IMG_PATH + poster_path;
 
     fetchReview(movieid, title);
 }
@@ -67,12 +67,15 @@ function fetchReview(movieid, title) {
     fetch(`https://movies-app-vugq.onrender.com/api/${movieid}`)
         .then(response => response.json())
         .then(data => {
-            if (data.message) {
+            console.log(data);
+            if (!data.review) {
+                console.log('first');
                 addReview(movieid, title);
             } else if (data.reviews && Array.isArray(data.reviews)) {
+                console.log('second');
                 displayreview(data, movieid);
             } else {
-                console.log('No reviews found');
+                console.log('third \n No reviews found');
             }
         })
         .catch(error => {
@@ -82,7 +85,8 @@ function fetchReview(movieid, title) {
 
 function displayreview(data, movieid) {
     const reviewSection = document.getElementById("reviewsSection");
-
+    reviewSection.innerHTML = '';
+    
     if (Array.isArray(data.reviews)) {
         data.reviews.forEach(review => {
             const reviewCard = document.createElement('div');
@@ -117,10 +121,8 @@ function displayreview(data, movieid) {
     }
 }
 
-
 function addReview(movieid, title) {
     const text = prompt('Enter the rating from 1-5:');
-    
     if (text && !isNaN(text) && text >= 1 && text <= 5) {
         const data = {
             title: title,
@@ -139,7 +141,7 @@ function addReview(movieid, title) {
         .then(data => {
             console.log('Rating added:', data);
             alert('Rating added successfully');
-            fetchReview(movieid, title);
+            // fetchReview(movieid, title);
         })
         .catch(err => {
             console.error('Error adding rating:', err);
