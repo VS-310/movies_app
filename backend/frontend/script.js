@@ -68,15 +68,13 @@ function fetchReview(movieid, title) {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            if (!data.reviews) {
-                console.log('first');
-                addReview(movieid, title);
-            } else if (data.reviews && Array.isArray(data.reviews)) {
-                console.log('second');
-                displayreview(data, movieid);
-            } else {
-                console.log('third \n No reviews found');
-            }
+                if(data.message) {
+                    console.log('first');
+                    addReview(movieid,title) 
+                } else {
+                    console.log('second');
+                    displayreview(data, movieid);
+                }
         })
         .catch(error => {
             console.error('Error fetching ratings:', error);
