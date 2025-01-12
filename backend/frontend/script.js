@@ -68,7 +68,7 @@ function fetchReview(movieid, title) {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            if (data.reviews && data.reviews.length === 0) {
+            if (!data.reviews) {
                 console.log('first');
                 addReview(movieid, title);
             } else if (data.reviews && Array.isArray(data.reviews)) {
