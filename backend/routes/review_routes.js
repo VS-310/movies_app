@@ -21,18 +21,21 @@ router.post('/:movieid/:title', async (req, res) => {
     try {
         const movieid = req.params.movieid;
         const title = req.params.title;
-        const rating = req.body;
-        // if (!rating) {
-        //     return res.status(400).json({ error: 'Rating is required' });
-        // }
+        const { review } = req.body;
 
-        const review = new Review({
+        if (!review) {
+            return res.status(400).json({ error: 'Rating is required' });
+        }
+
+        const rating = Number(review);
+
+        const reviewObj = new Review({
             title: title,
             movieid: movieid,
             rating: rating,
         });
 
-        const response = await review.save();
+        const response = await reviewObj.save();
 
         res.status(200).json({ message: "Review saved successfully", response: response });
     } 
@@ -55,7 +58,8 @@ router.get('/:movieid', async (req, res) => {
         if (response.length > 0) {
             res.status(200).json({ response: response });
         } else {
-            res.status(404).json({ error: "No reviews found for this movie" });
+            res.status(200).json({ reviews: [] });
+            // res.status(404).json({ error: "No reviews found for this movie" });
         }
     } catch (err) {
         console.log(err);

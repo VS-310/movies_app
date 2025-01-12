@@ -68,7 +68,7 @@ function fetchReview(movieid, title) {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            if (!data.review) {
+            if (data.reviews && data.reviews.length === 0) {
                 console.log('first');
                 addReview(movieid, title);
             } else if (data.reviews && Array.isArray(data.reviews)) {
@@ -165,9 +165,7 @@ function addReview(movieid, title) {
     const text = prompt('Enter the rating from 1-5:');
     if (text && !isNaN(text) && text >= 1 && text <= 5) {
         const data = {
-            title: title,
-            movieid: movieid,
-            review: text
+            review: text,
         };
 
         fetch(`https://movies-app-vugq.onrender.com/api/${movieid}/${title}`, {
@@ -181,7 +179,6 @@ function addReview(movieid, title) {
         .then(data => {
             console.log('Rating added:', data);
             alert('Rating added successfully');
-            // fetchReview(movieid, title);
         })
         .catch(err => {
             console.error('Error adding rating:', err);
@@ -202,15 +199,15 @@ function editReview(review,movieid) {
             },
             body: JSON.stringify({ review: text }),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Rating updated:', data);
-            alert('Rating updated successfully!');
-            fetchReview(movieid);
-        })
-        .catch(error => {
-            console.error('Error updating rating:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Rating updated:', data);
+                alert('Rating updated successfully!');
+                fetchReview(movieid);
+            })
+            .catch(error => {
+                console.error('Error updating rating:', error);
+            });
     }
 }
 
@@ -224,16 +221,16 @@ function deleteReview(review,movieid) {
                 'Content-Type': 'application/json',
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Rating deleted:', data);
-            alert('Rating deleted successfully!');
-            fetchReview(movieid);
-        })
-        .catch(error => {
-            console.error('Error deleting rating:', error);
-            alert('There was an error deleting the rating. Please try again.');
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Rating deleted:', data);
+                alert('Rating deleted successfully!');
+                fetchReview(movieid);
+            })
+            .catch(error => {
+                console.error('Error deleting rating:', error);
+                alert('There was an error deleting the rating. Please try again.');
+            });
     }
 }
 
