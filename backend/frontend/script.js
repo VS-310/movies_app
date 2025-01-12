@@ -68,12 +68,20 @@ function fetchReview(movieid, title) {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            if(!data.message) {
+            // if(!data.message) {
+            //     console.log('first');
+            //     addReview(movieid, title);
+            //     displayreview(data, movieid);
+            // } else {
+            //     console.log('second');
+            //     displayreview(data, movieid);
+            // }
+            if (data.reviews && data.reviews.length > 0) {
                 console.log('first');
-                addReview(movieid, title);
+                displayreview(data, movieid);
             } else {
                 console.log('second');
-                displayreview(data, movieid);
+                addReview(movieid, title);
             }
         })
         .catch(error => {
@@ -177,6 +185,7 @@ function addReview(movieid, title) {
         .then(data => {
             console.log('Rating added:', data);
             alert('Rating added successfully');
+            fetchReview(movieid, title);
         })
         .catch(err => {
             console.error('Error adding rating:', err);
