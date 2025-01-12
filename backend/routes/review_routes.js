@@ -70,10 +70,11 @@ router.get('/:movieid', async (req, res) => {
 router.put('/:movieid', async (req, res) => {
     try {
         const movieid = req.params.movieid;
-        const upd_data = req.body;
+        const {rating} = req.body;
+        const upd_data = Number(rating);
         const response = await Review.findOneAndUpdate(
             { movieid: movieid },
-            upd_data,
+            { $set: { rating: upd_data } },
             {
                 new: true,
                 runValidators: true,
