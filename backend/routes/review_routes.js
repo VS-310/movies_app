@@ -17,13 +17,14 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/:movieid', async (req, res) => {
+router.post('/:movieid/:title', async (req, res) => {
     try {
         const movieid = req.params.movieid;
-        const {title, rating} = req.body;
-        if (!rating) {
-            return res.status(400).json({ error: 'Rating is required' });
-        }
+        const title = req.params.title;
+        const rating = req.body;
+        // if (!rating) {
+        //     return res.status(400).json({ error: 'Rating is required' });
+        // }
 
         const review = new Review({
             title: title,

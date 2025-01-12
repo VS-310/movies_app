@@ -170,7 +170,7 @@ function addReview(movieid, title) {
             review: text
         };
 
-        fetch(`https://movies-app-vugq.onrender.com/api/${movieid}`, {
+        fetch(`https://movies-app-vugq.onrender.com/api/${movieid}/${title}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
