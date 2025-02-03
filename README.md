@@ -9,10 +9,11 @@ A dynamic movie exploration platform where users can **search for movies**, **ad
 - 🔄 **Real-Time Updates**: Seamlessly update ratings and movie details.
 
 ## Tech Stack
-- **Frontend**: React.js, Tailwind CSS
+- **Frontend**: React.js
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB (for storing movie and rating data)
 - **API**: TMDB API (for fetching movie details)
+- **API Testing**: Postman (for testing and debugging the backend API)
 
 ## Installation
 
@@ -36,7 +37,7 @@ A dynamic movie exploration platform where users can **search for movies**, **ad
 
 2. Create a `.env` file in the frontend directory to store the TMDB API key:
    ```txt
-   REACT_APP_TMDB_API_KEY=your_api_key_here
+   TMDB_API_KEY = your_api_key_here
    ```
 
 3. Start the frontend development server:
@@ -58,7 +59,7 @@ A dynamic movie exploration platform where users can **search for movies**, **ad
 
 3. Create a `.env` file in the backend directory to store MongoDB URI:
    ```txt
-   MONGODB_URI=your_mongodb_connection_string_here
+   MONGO_URL = your_mongodb_connection_string_here
    ```
 
 4. Start the backend development server:
@@ -72,11 +73,11 @@ A dynamic movie exploration platform where users can **search for movies**, **ad
 - Edit or delete ratings anytime.
 
 ## API Endpoints
-- `GET /movies`: Fetch all movies and their ratings.
-- `POST /ratings`: Add a new rating for a movie.
-- `PUT /ratings/:id`: Edit an existing rating.
-- `DELETE /ratings/:id`: Delete a rating.
+- `GET /api`: Fetch all movies and their ratings.
+- `GET /api/:movieid`: Fetch a specific movie rating.
+- `POST /api/:movieid/:title`: Add a new rating for a movie.
+- `PUT /api/:movieid`: Edit an existing rating of a movie.
+- `DELETE /api/:movieid`: Delete a rating of a movie.
 
 ## Contributing
 Contributions are welcome! Feel free to fork the repository and submit a pull request.
-```
